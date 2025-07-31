@@ -26,22 +26,37 @@ model User {
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt
 
-  entries    JournalEntry[]  // رابطه یک به چند با JournalEntry
+  entries    JournalEntry[]
 
   @@map("users")
 }
 
 model JournalEntry {
   id         String    @id @default(cuid())
-
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
-
   userId     String
   user       User      @relation(fields: [userId], references: [id])
-
   content    String    @db.Text
+
+  analysis   Analysis? @relation("EntryAnalysis")
 
   @@index([userId])
 }
 
+model Analysis {
+  id         String    @id @default(cuid())
+
+  entryId    String    @unique
+  entry      JournalEntry @relation("EntryAnalysis", fields: [entryId], references: [id])
+
+  mood       String
+  summary    String
+  color      String
+  negative   Boolean
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([entryId])
+}
