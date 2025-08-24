@@ -2,9 +2,9 @@
 import { prisma } from '@/utils/db'
 import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
-import type { User as PrismaUser } from '@/generated/prisma'
+import type { User } from '@/generated/prisma'
 
-const ensureUserExists = async (): Promise<PrismaUser> => {
+const ensureUserExists = async (): Promise<User> => {
 	const user = await currentUser()
 
 	if (!user) {
